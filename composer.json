@@ -18,14 +18,29 @@
         }
     },
     "require": {
-        "php": ">=7.3"
+        "php": ">=7.3",
+        "ext-gd": "*",
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "hyperf/db-connection": "~2.2.0",
+        "hyperf/di": "2.2.*",
+        "hyperf/framework": "2.2.*",
+        "hyperf/http-server": "~2.2.0",
+        "hyperf/paginator": "^2.2",
+        "hyperf/redis": "~2.2.0",
+        "hyperf/session": "^2.2",
+        "hyperf/validation": "^2.2",
+        "jenssegers/agent": "^2.6",
+        "phpgangsta/googleauthenticator": "dev-master",
+        "psr/simple-cache": "^1.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
         "mockery/mockery": "^1.0",
         "phpstan/phpstan": "^1.0",
         "phpunit/phpunit": ">=7.0",
-        "swoole/ide-helper": "^4.5"
+        "swoole/ide-helper": "dev-master",
+        "symfony/var-dumper": "^5.1"
     },
     "suggest": {
         "swow/swow": "Required to create swow components."
