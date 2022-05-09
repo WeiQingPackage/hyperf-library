@@ -11,6 +11,9 @@ declare(strict_types=1);
  */
 namespace WeiQing\Library;
 
+use WeiQing\Library\Middleware\CorsMiddleware;
+use WeiQing\Library\Middleware\RequestMiddleware;
+
 class ConfigProvider
 {
     public function __invoke(): array
@@ -19,6 +22,12 @@ class ConfigProvider
             'dependencies' => [
             ],
             'commands' => [
+            ],
+            'middlewares' => [
+                'http' => [
+                    CorsMiddleware::class,
+                    RequestMiddleware::class
+                ]
             ],
             'annotations' => [
                 'scan' => [
