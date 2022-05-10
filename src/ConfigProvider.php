@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace WeiQing\Library;
 
+use Hyperf\Session\Middleware\SessionMiddleware;
 use WeiQing\Library\Middleware\CorsMiddleware;
 use WeiQing\Library\Middleware\RequestMiddleware;
 
@@ -20,13 +21,20 @@ class ConfigProvider
     {
         return [
             'dependencies' => [
+                'admin' => \Hyperf\HttpServer\Server::class
             ],
             'commands' => [
             ],
             'middlewares' => [
                 'http' => [
                     CorsMiddleware::class,
-                    RequestMiddleware::class
+                    RequestMiddleware::class,
+                    SessionMiddleware::class,
+                ],
+                'admin' => [
+                    CorsMiddleware::class,
+                    RequestMiddleware::class,
+                    SessionMiddleware::class
                 ]
             ],
             'annotations' => [
