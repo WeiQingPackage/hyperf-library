@@ -2,6 +2,7 @@
     "name": "weiqing/library",
     "type": "library",
     "license": "MIT",
+    "version": "0.1.0",
     "keywords": [
         "php",
         "hyperf"
