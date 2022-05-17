@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace WeiQing\Library;
 
 use Hyperf\Session\Middleware\SessionMiddleware;
+use WeiQing\Library\Exception\Handler\ReturnJsonExceptionHandler;
 use WeiQing\Library\Middleware\CorsMiddleware;
 use WeiQing\Library\Middleware\RequestMiddleware;
 
@@ -24,6 +25,13 @@ class ConfigProvider
                 'admin' => \Hyperf\HttpServer\Server::class,
             ],
             'commands' => [
+            ],
+            'exceptions' => [
+                'handler' => [
+                    'admin' => [
+                        ReturnJsonExceptionHandler::class,
+                    ],
+                ],
             ],
             'middlewares' => [
                 'http' => [

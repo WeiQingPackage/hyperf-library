@@ -15,7 +15,9 @@ use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Hyperf\Validation\ValidatorFactory;
 use Psr\SimpleCache\CacheInterface;
+use WeiQing\Library\Exception\ReturnJsonException;
 
 class Controller
 {
@@ -42,6 +44,11 @@ class Controller
      * @var SessionInterface
      */
     protected SessionInterface $session;
+
+    /**
+     * @var ValidatorFactory
+     */
+    protected ValidatorFactory $validatorFactory;
 
     protected function tableJson($list, $column = [], $developerMessage = ''): \Psr\Http\Message\ResponseInterface
     {
@@ -86,5 +93,14 @@ class Controller
             'data' => null,
         ];
         return $this->response->withAddedHeader('x-log-request-id', $data['rid'])->json($data);
+    }
+
+    protected function _vali(array $data, array $rules, array $messages)
+    {
+        $validator = $this->validatorFactory->make($data, $rules, $messages);
+        if ($validator->fails()) {
+            throw new ReturnJsonException($validator->errors()->first());
+        }
+        return $data;
     }
 }
