@@ -34,7 +34,7 @@ class ReturnJsonExceptionHandler extends ExceptionHandler
 
             // 阻止异常冒泡
             $this->stopPropagation();
-            return $response->withHeader('Content-Type', 'application/json')->withBody(new SwooleStream(json_encode($data, JSON_UNESCAPED_UNICODE)));
+            return $response->withHeader('Content-Type', 'application/json')->withHeader('Server', 'GoHttpServer')->withBody(new SwooleStream(json_encode($data, JSON_UNESCAPED_UNICODE)));
         }
 
         // 交给下一个异常处理器

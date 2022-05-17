@@ -23,31 +23,24 @@ class Controller
 {
     /**
      * @Inject
-     * @var ResponseInterface
      */
     protected ResponseInterface $response;
 
     /**
      * @Inject
-     * @var RequestInterface
      */
     protected RequestInterface $request;
 
     /**
      * @Inject
-     * @var CacheInterface
      */
     protected CacheInterface $cache;
 
     /**
      * @Inject
-     * @var SessionInterface
      */
     protected SessionInterface $session;
 
-    /**
-     * @var ValidatorFactory
-     */
     protected ValidatorFactory $validatorFactory;
 
     protected function tableJson($list, $column = [], $developerMessage = ''): \Psr\Http\Message\ResponseInterface
@@ -56,7 +49,6 @@ class Controller
             $list['column'] = $column;
         }
         $data = [
-            'rid' => $this->request->header('REQUEST_ID'),
             'successful' => true,
             'message' => 'SUCCESS',
             'developerMessage' => $developerMessage,
@@ -69,7 +61,6 @@ class Controller
     protected function success(array $data = [], string $message = 'SUCCESS', string $developerMessage = ''): \Psr\Http\Message\ResponseInterface
     {
         $data = [
-            'rid' => $this->request->header('REQUEST_ID'),
             'successful' => true,
             'message' => $message,
             'developerMessage' => $developerMessage,
@@ -85,7 +76,6 @@ class Controller
     protected function error(string $message, int $code = 500, bool $successful = true, string $developerMessage = '')
     {
         $data = [
-            'rid' => $this->request->header('REQUEST_ID'),
             'successful' => $successful,
             'message' => $message,
             'developerMessage' => $developerMessage,
@@ -95,8 +85,12 @@ class Controller
         return $this->response->withAddedHeader('x-log-request-id', $data['rid'])->json($data);
     }
 
-    protected function _vali(array $data, array $rules, array $messages)
+    /**
+     * 校验请求参数.
+     */
+    protected function _vali(array $rules, array $messages): array
     {
+        $data = $this->request->all();
         $validator = $this->validatorFactory->make($data, $rules, $messages);
         if ($validator->fails()) {
             throw new ReturnJsonException($validator->errors()->first());
