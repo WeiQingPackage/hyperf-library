@@ -93,16 +93,11 @@ class Controller
      */
     protected function _vali(array $rules, array $messages): array
     {
-        var_dump("进来了");
         $data = $this->request->all();
-        var_dump($data);
         $validator = $this->validatorFactory->make($data, $rules, $messages);
-        var_dump($validator);
         if ($validator->fails()) {
-            var_dump("错误了");
             throw new ReturnJsonException($validator->errors()->first());
         }
-        var_dump("没触发");
         return $data;
     }
 }
