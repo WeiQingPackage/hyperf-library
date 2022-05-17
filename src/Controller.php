@@ -41,6 +41,9 @@ class Controller
      */
     protected SessionInterface $session;
 
+    /**
+     * @Inject
+     */
     protected ValidatorFactory $validatorFactory;
 
     protected function tableJson($list, $column = [], $developerMessage = ''): \Psr\Http\Message\ResponseInterface
@@ -94,6 +97,7 @@ class Controller
         $data = $this->request->all();
         var_dump($data);
         $validator = $this->validatorFactory->make($data, $rules, $messages);
+        var_dump($validator);
         if ($validator->fails()) {
             var_dump("错误了");
             throw new ReturnJsonException($validator->errors()->first());
