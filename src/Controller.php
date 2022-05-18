@@ -70,7 +70,7 @@ class Controller
             'code' => 200,
             'data' => $data,
         ];
-        return $this->response->withAddedHeader('x-log-request-id', $data['rid'])->json($data);
+        return $this->response->json($data);
     }
 
     /**
@@ -85,7 +85,7 @@ class Controller
             'code' => $code,
             'data' => null,
         ];
-        return $this->response->withAddedHeader('x-log-request-id', $data['rid'])->json($data);
+        return $this->response->json($data);
     }
 
     /**
