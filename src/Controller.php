@@ -15,7 +15,11 @@ use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Hyperf\Utils\ApplicationContext;
+use Hyperf\Validation\Contract\PresenceVerifierInterface;
 use Hyperf\Validation\ValidatorFactory;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\SimpleCache\CacheInterface;
 use WeiQing\Library\Exception\ReturnJsonException;
 
@@ -45,6 +49,11 @@ class Controller
      * @Inject
      */
     protected ValidatorFactory $validatorFactory;
+
+    /**
+     * @Inject
+     */
+    protected ApplicationContext $appCtx;
 
     protected function tableJson($list, $column = [], $developerMessage = ''): \Psr\Http\Message\ResponseInterface
     {
@@ -94,6 +103,12 @@ class Controller
     protected function _vali(array $rules, array $messages): array
     {
         $data = $this->request->all();
+        try {
+            $this->validatorFactory->setPresenceVerifier($this->appCtx::getContainer()->get(PresenceVerifierInterface::class));
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            var_dump("protected_function_validate: 服务器错误: {$e->getMessage()}");
+            throw new ReturnJsonException("内部服务器错误: {$e->getMessage()}", 500);
+        }
         $validator = $this->validatorFactory->make($data, $rules, $messages);
         if ($validator->fails()) {
             throw new ReturnJsonException($validator->errors()->first());
