@@ -1,7 +1,15 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 namespace WeiQing\Library\Extend;
-
 
 use GuzzleHttp\Client;
 use Longman\TelegramBot\Entities\InlineKeyboard;
@@ -10,25 +18,23 @@ use Longman\TelegramBot\Telegram;
 
 class TelegramExtend
 {
-
     protected $bot_username;
 
     protected $bot_token;
 
     public static function make(string $bot_username, string $bot_token): TelegramExtend
     {
-
         $self = new self();
         $self->bot_token = $bot_token;
         $self->bot_username = $bot_username;
 
         new Telegram($self->bot_token, $self->bot_username);
-        Request::setClient(new Client(['base_uri' => 'https://api.telegram.org','verify' => false]));
+        Request::setClient(new Client(['base_uri' => 'https://api.telegram.org', 'verify' => false]));
         return $self;
     }
 
     /**
-     * 发送消息
+     * 发送消息.
      * @param $chat_id
      * @param $content
      * @param $reply_to_message
@@ -37,9 +43,9 @@ class TelegramExtend
     public function sendMessage($chat_id, $content, $reply_to_message = null)
     {
         $message = [
-            "chat_id" => $chat_id,
-            "text" => $content,
-            "parse_mode" => "HTML"
+            'chat_id' => $chat_id,
+            'text' => $content,
+            'parse_mode' => 'HTML',
         ];
         if ($reply_to_message) {
             $message['reply_to_message_id'] = $reply_to_message;
@@ -57,10 +63,10 @@ class TelegramExtend
     public function sendBtnMessage($chat_id, $content, $markup)
     {
         Request::sendMessage([
-            "chat_id" => $chat_id,
-            "text" => $content,
-            "parse_mode" => "HTML",
-            'reply_markup' => new InlineKeyboard($markup)
+            'chat_id' => $chat_id,
+            'text' => $content,
+            'parse_mode' => 'HTML',
+            'reply_markup' => new InlineKeyboard($markup),
         ]);
     }
 
@@ -72,15 +78,15 @@ class TelegramExtend
     {
         Request::answerCallbackQuery([
             'callback_query_id' => $id,
-            'text' => $txt
+            'text' => $txt,
         ]);
     }
 
     public function setWebHook($url)
     {
         $ret = Request::setWebhook([
-            "url" => $url,
-            "max_connections" => 100
+            'url' => $url,
+            'max_connections' => 100,
         ]);
         var_dump($ret);
         return json_decode($ret, true);
@@ -92,10 +98,11 @@ class TelegramExtend
     }
 
     /**
-     * 编辑消息
+     * 编辑消息.
      * @param $data
      */
-    public function editMessageText($data){
+    public function editMessageText($data)
+    {
         $res = Request::editMessageReplyMarkup($data);
         var_dump($res);
     }

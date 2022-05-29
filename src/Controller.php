@@ -28,31 +28,37 @@ class Controller
     /**
      * @Inject
      */
+    #[Inject]
     protected ResponseInterface $response;
 
     /**
      * @Inject
      */
+    #[Inject]
     protected RequestInterface $request;
 
     /**
      * @Inject
      */
+    #[Inject]
     protected CacheInterface $cache;
 
     /**
      * @Inject
      */
+    #[Inject]
     protected SessionInterface $session;
 
     /**
      * @Inject
      */
+    #[Inject]
     protected ValidatorFactory $validatorFactory;
 
     /**
      * @Inject
      */
+    #[Inject]
     protected ApplicationContext $appCtx;
 
     protected function tableJson($list, $column = [], $developerMessage = ''): \Psr\Http\Message\ResponseInterface
